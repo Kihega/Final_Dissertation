@@ -128,6 +128,7 @@ function GeoFilterBar({onFilterChange,darkMode,t,showScopeCards=true}){
   const [scope,setScope]=useState('national')
   const [region,setRegion]=useState('')
   const [district,setDistrict]=useState('')
+<<<<<<< HEAD
   const [ward,setWard]=useState('')
   // ── Load geography from DB ─────────────────────────
   const [dbRegions,setDbRegions]=useState([])
@@ -201,6 +202,27 @@ function GeoFilterBar({onFilterChange,darkMode,t,showScopeCards=true}){
   const selDistrict=(d)=>{setDistrict(d);setDSearch(d);setWard('');setVillage('');setWSearch('');setVSearch('');setShowDDD(false);onFilterChange?.({scope,region,district:d,ward:'',village:''})}
   const selWard=(w)=>{setWard(w);setWSearch(w);setVillage('');setVSearch('');setShowWDD(false);onFilterChange?.({scope,region,district,ward:w,village:''})}
   const selVillage=(v)=>{setVillage(v);setVSearch(v);setShowVDD(false);onFilterChange?.({scope,region,district,ward,village:v})}
+=======
+  const [village,setVillage]=useState('')
+  const [rSearch,setRSearch]=useState('')
+  const [dSearch,setDSearch]=useState('')
+  const [vSearch,setVSearch]=useState('')
+  const [showRDD,setShowRDD]=useState(false)
+  const [showDDD,setShowDDD]=useState(false)
+  const [showVDD,setShowVDD]=useState(false)
+
+  const scopeRegions=ALL_REGIONS.filter(r=>scope==='national'?true:r.jurisdiction===scope)
+  const filteredR=scopeRegions.filter(r=>r.name.toLowerCase().includes(rSearch.toLowerCase())||r.code.toLowerCase().includes(rSearch.toLowerCase()))
+  const availD=getDistricts(region)
+  const filteredD=availD.filter(d=>d.toLowerCase().includes(dSearch.toLowerCase()))
+  const availV=getVillages(region,district)
+  const filteredV=availV.filter(v=>v.toLowerCase().includes(vSearch.toLowerCase()))
+
+  const handleScope=(s)=>{setScope(s);setRegion('');setDistrict('');setVillage('');setRSearch('');setDSearch('');setVSearch('');onFilterChange?.({scope:s,region:'',district:'',village:''})}
+  const selRegion=(r)=>{setRegion(r.name);setRSearch(r.name);setDistrict('');setVillage('');setDSearch('');setVSearch('');setShowRDD(false);onFilterChange?.({scope,region:r.name,district:'',village:''})}
+  const selDistrict=(d)=>{setDistrict(d);setDSearch(d);setVillage('');setVSearch('');setShowDDD(false);onFilterChange?.({scope,region,district:d,village:''})}
+  const selVillage=(v)=>{setVillage(v);setVSearch(v);setShowVDD(false);onFilterChange?.({scope,region,district,village:v})}
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
   const clear=()=>handleScope(scope)
 
   const SCOPES=[
@@ -224,15 +246,23 @@ function GeoFilterBar({onFilterChange,darkMode,t,showScopeCards=true}){
           ))}
         </div>
       )}
+<<<<<<< HEAD
       {/* 4-column filter: Region District Ward Village */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
+=======
+      <div className="grid grid-cols-3 gap-3">
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
         {/* Region */}
         <div className="relative">
           <p className={`text-[9px] uppercase tracking-widest mb-1 ${t.textDim}`}>{region?`Region: ${region}`:'Filter by Region'}</p>
           <input value={rSearch} onChange={e=>{setRSearch(e.target.value);setShowRDD(true)}} onFocus={()=>setShowRDD(true)} placeholder="Search region..." className={iBase}/>
           {showRDD&&rSearch&&(
             <div className={`absolute top-full mt-1 left-0 right-0 z-30 rounded-lg border shadow-xl max-h-44 overflow-y-auto ${t.card} ${t.cardBorder}`}>
+<<<<<<< HEAD
               {filteredR.length===0?<p className={`px-3 py-2 text-xs ${t.textDim}`}>No regions</p>
+=======
+              {filteredR.length===0?<p className={`px-3 py-2 text-xs ${t.textDim}`}>No regions found</p>
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
                :filteredR.map(r=><button key={r.code} onClick={()=>selRegion(r)} className={`w-full text-left px-3 py-2 text-xs ${t.text} hover:bg-[#1a3060] hover:text-white`}>{r.name}<span className={`ml-2 text-[9px] ${t.textDim}`}>{r.pop}</span></button>)}
             </div>
           )}
@@ -243,11 +273,16 @@ function GeoFilterBar({onFilterChange,darkMode,t,showScopeCards=true}){
           <input value={dSearch} onChange={e=>{setDSearch(e.target.value);setShowDDD(true)}} onFocus={()=>setShowDDD(true)} disabled={!region} placeholder={region?'Search district...':'Select region first'} className={`${iBase} disabled:opacity-40`}/>
           {showDDD&&dSearch&&region&&(
             <div className={`absolute top-full mt-1 left-0 right-0 z-30 rounded-lg border shadow-xl max-h-44 overflow-y-auto ${t.card} ${t.cardBorder}`}>
+<<<<<<< HEAD
               {filteredD.length===0?<p className={`px-3 py-2 text-xs ${t.textDim}`}>No districts</p>
+=======
+              {filteredD.length===0?<p className={`px-3 py-2 text-xs ${t.textDim}`}>No districts found</p>
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
                :filteredD.map(d=><button key={d} onClick={()=>selDistrict(d)} className={`w-full text-left px-3 py-2 text-xs ${t.text} hover:bg-[#1a3060] hover:text-white`}>{d}</button>)}
             </div>
           )}
         </div>
+<<<<<<< HEAD
         {/* Ward */}
         <div className="relative">
           <p className={`text-[9px] uppercase tracking-widest mb-1 ${t.textDim}`}>{ward?`Ward: ${ward}`:'Filter by Ward'}</p>
@@ -266,18 +301,35 @@ function GeoFilterBar({onFilterChange,darkMode,t,showScopeCards=true}){
           {showVDD&&vSearch&&ward&&(
             <div className={`absolute top-full mt-1 left-0 right-0 z-30 rounded-lg border shadow-xl max-h-44 overflow-y-auto ${t.card} ${t.cardBorder}`}>
               {filteredV.length===0?<p className={`px-3 py-2 text-xs ${t.textDim}`}>No villages for this ward</p>
+=======
+        {/* Village */}
+        <div className="relative">
+          <p className={`text-[9px] uppercase tracking-widest mb-1 ${t.textDim}`}>{village?`Village: ${village}`:'Filter by Village'}</p>
+          <input value={vSearch} onChange={e=>{setVSearch(e.target.value);setShowVDD(true)}} onFocus={()=>setShowVDD(true)} disabled={!district} placeholder={district?'Search village...':'Select district first'} className={`${iBase} disabled:opacity-40`}/>
+          {showVDD&&vSearch&&district&&(
+            <div className={`absolute top-full mt-1 left-0 right-0 z-30 rounded-lg border shadow-xl max-h-44 overflow-y-auto ${t.card} ${t.cardBorder}`}>
+              {filteredV.length===0?<p className={`px-3 py-2 text-xs ${t.textDim}`}>No villages found</p>
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
                :filteredV.map(v=><button key={v} onClick={()=>selVillage(v)} className={`w-full text-left px-3 py-2 text-xs ${t.text} hover:bg-[#1a3060] hover:text-white`}>{v}</button>)}
             </div>
           )}
         </div>
       </div>
+<<<<<<< HEAD
       {(region||district||ward||village)&&(
+=======
+      {(region||district||village)&&(
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
         <div className="flex items-center gap-2 flex-wrap">
           <span className={`text-[9px] ${t.textDim}`}>Showing:</span>
           {region&&<span className="px-2 py-0.5 rounded-full text-[9px] font-mono bg-[#00d4ff]/10 text-[#00d4ff] border border-[#00d4ff]/20">{region}</span>}
           {district&&<><span className={`text-[9px] ${t.textDim}`}>›</span><span className="px-2 py-0.5 rounded-full text-[9px] font-mono bg-[#00ff9d]/10 text-[#00ff9d] border border-[#00ff9d]/20">{district}</span></>}
+<<<<<<< HEAD
           {ward&&<><span className={`text-[9px] ${t.textDim}`}>›</span><span className="px-2 py-0.5 rounded-full text-[9px] font-mono bg-orange-400/10 text-orange-400 border border-orange-400/20">{ward}</span></>}
           {village&&<><span className={`text-[9px] ${t.textDim}`}>›</span><span className="px-2 py-0.5 rounded-full text-[9px] font-mono bg-purple-400/10 text-purple-400 border border-purple-400/20">{village}</span></>}
+=======
+          {village&&<><span className={`text-[9px] ${t.textDim}`}>›</span><span className="px-2 py-0.5 rounded-full text-[9px] font-mono bg-orange-400/10 text-orange-400 border border-orange-400/20">{village}</span></>}
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
           <button onClick={clear} className="text-[9px] text-red-400 hover:underline ml-1">Clear ×</button>
         </div>
       )}
@@ -285,7 +337,10 @@ function GeoFilterBar({onFilterChange,darkMode,t,showScopeCards=true}){
   )
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
 // ── WARNING POPUP (reusable) ──────────────────────────────
 function WarningPopup({type,user,onConfirm,onCancel,t}){
   const isSuspend=type==='suspend'
@@ -410,6 +465,7 @@ function DashboardContent({darkMode,t,onNewReg}){
 
 // ── DEMOGRAPHICS CONTENT ─────────────────────────────────
 function DemographicsContent({darkMode,t}){
+<<<<<<< HEAD
   const [activeFilter,setActiveFilter]=useState({scope:'national',region:'',district:'',ward:'',village:''})
   const meta=filterMeta[pFilter]
   const rawData=pyramidData[pFilter]
@@ -582,6 +638,23 @@ function DemographicsContent({darkMode,t}){
 
 
   
+=======
+  const [pFilter,setPFilter]=useState('national')
+  const [activeFilter,setActiveFilter]=useState({scope:'national',region:'',district:'',village:''})
+  const meta=filterMeta[pFilter]
+  const rawData=pyramidData[pFilter]
+  const chartData=rawData.map(d=>({age:d.age,male:-d.male,female:d.female}))
+  const scopeLabel=activeFilter.village||activeFilter.district||activeFilter.region||activeFilter.scope
+
+  // Cards update based on filter scope
+  const scopeMult={national:1,mainland:0.915,zanzibar:0.085}
+  const m=scopeMult[activeFilter.scope]||1
+  const DCARDS=[
+    {label:'Total Population',  value:Math.round(63748291*m).toLocaleString(), sub:'Status: Alive only',    color:'text-[#00ff9d]',bg:'bg-[#00ff9d]/10 border-[#00ff9d]/20'},
+    {label:'Male Population',   value:Math.round(31364159*m).toLocaleString(), sub:'49.2% of total',        color:'text-[#00d4ff]',bg:'bg-[#00d4ff]/10 border-[#00d4ff]/20'},
+    {label:'Female Population', value:Math.round(32384132*m).toLocaleString(), sub:'50.8% of total',        color:'text-[#ff6b9d]',bg:'bg-[#ff6b9d]/10 border-[#ff6b9d]/20'},
+  ]
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
   const EMPLOYMENT=[
     {label:'Government Employees',note:'Teachers, Doctors, Officers',pct:18.4,color:'bg-[#00d4ff]',text:'text-[#00d4ff]'},
     {label:'Self Employed',        note:'Farmers, Business, Traders', pct:47.2,color:'bg-[#00ff9d]',text:'text-[#00ff9d]'},
@@ -592,6 +665,7 @@ function DemographicsContent({darkMode,t}){
     {level:'A-Level',pct:8},{level:'Certificate',pct:5},{level:'Diploma',pct:5},
     {level:"Bachelor's",pct:4},{level:"Master's+",pct:2},{level:'VETA / Other',pct:1},
   ]
+<<<<<<< HEAD
 
   return(
     <div className="space-y-5">
@@ -600,6 +674,21 @@ function DemographicsContent({darkMode,t}){
       {/* Filter bar (now with Ward level) */}
       <GeoFilterBar onFilterChange={f=>{setActiveFilter(f);setPFilter(f.scope)}} darkMode={darkMode} t={t}/>
 
+=======
+  return(
+    <div className="space-y-5">
+      <div><h1 className={`font-bold text-xl sm:text-2xl ${t.text}`}>Demographics View</h1><p className={`text-xs mt-0.5 ${t.textSub}`}>Showing: <span className="text-[#00d4ff] font-mono capitalize">{scopeLabel}</span></p></div>
+      <GeoFilterBar onFilterChange={f=>{setActiveFilter(f);setPFilter(f.scope)}} darkMode={darkMode} t={t}/>
+      <div className="grid grid-cols-3 gap-3">
+        {DCARDS.map(({label,value,sub,color,bg})=>(
+          <div key={label} className={`${t.card} border ${t.cardBorder} rounded-xl p-4 hover:shadow-lg transition-all`}>
+            <p className={`text-[10px] font-mono tracking-widest uppercase mb-2 ${t.textDim}`}>{label}</p>
+            <p className={`font-bold text-lg sm:text-xl mb-1 ${t.text}`}>{value}</p>
+            <span className={`text-[9px] font-mono px-2 py-0.5 rounded-full border ${color} ${bg}`}>{sub}</span>
+          </div>
+        ))}
+      </div>
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
       {/* Employment Status Card */}
       <div className={`${t.card} border ${t.cardBorder} rounded-xl p-4`}>
         <div className="flex items-center gap-2 mb-4">
@@ -613,14 +702,23 @@ function DemographicsContent({darkMode,t}){
                 <div><p className={`text-xs font-semibold ${t.text}`}>{label}</p><p className={`text-[9px] ${t.textDim}`}>{note}</p></div>
                 <span className={`text-sm font-bold shrink-0 ml-2 ${text}`}>{pct}%</span>
               </div>
+<<<<<<< HEAD
               <div className={`h-1.5 rounded-full ${darkMode?'bg-gray-200':'bg-[#1e2d45]'}`}><div className={`h-1.5 rounded-full ${color} transition-all duration-700`} style={{width:`${pct}%`}}/></div>
+=======
+              <div className={`h-1.5 rounded-full ${darkMode?'bg-gray-200':'bg-[#1e2d45]'}`}>
+                <div className={`h-1.5 rounded-full ${color} transition-all duration-700`} style={{width:`${pct}%`}}/>
+              </div>
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
             </div>
           ))}
         </div>
       </div>
+<<<<<<< HEAD
 
 
       {/* Population Pyramid + Education */}
+=======
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <div className={`${t.card} border ${t.cardBorder} rounded-xl p-4`}>
           <div className="flex items-start justify-between gap-3 mb-3">
@@ -660,6 +758,7 @@ function DemographicsContent({darkMode,t}){
           </div>
         </div>
       </div>
+<<<<<<< HEAD
 
       {/* ── POPULATION TABLE (after pyramid, changes per filter scope) ── */}
       {tableData.rows.length>0&&(
@@ -783,13 +882,21 @@ function DemographicsContent({darkMode,t}){
         </div>
       )}
 
+=======
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
     </div>
   )
 }
 
+<<<<<<< HEAD
 
 // ── INFRASTRUCTURE CONTENT ───────────────────────────────
 function InfrastructureContent({darkMode,t}){
+=======
+// ── INFRASTRUCTURE CONTENT ───────────────────────────────
+function InfrastructureContent({darkMode,t}){
+  const [activeFilter,setActiveFilter]=useState({scope:'national',region:'',district:'',village:''})
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
   const [search,setSearch]=useState('')
   const [page,setPage]=useState(0)
   const PER_PAGE=8
@@ -926,6 +1033,11 @@ function InfrastructureContent({darkMode,t}){
 
 // ── DISTRICT ADMINS CONTENT ──────────────────────────────
 function DistrictAdminsContent({darkMode,t,onNewReg}){
+<<<<<<< HEAD
+=======
+  const [search,setSearch]=useState('')
+  const [page,setPage]=useState(0)
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
   const PER_PAGE=5
   const ADMINS=[
     {id:'DA-001',name:'John Jovith Amsterdam',region:'Dar es Salaam',district:'Ilala',    status:'ACTIVE',   joined:'2025-01-15',mfa:true },
@@ -985,6 +1097,11 @@ function DistrictAdminsContent({darkMode,t,onNewReg}){
 
 // ── VILLAGE OFFICERS CONTENT ─────────────────────────────
 function VillageOfficersContent({darkMode,t}){
+<<<<<<< HEAD
+=======
+  const [search,setSearch]=useState('')
+  const [page,setPage]=useState(0)
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
   const PER_PAGE=5
   const OFFICERS=[
     {id:'VO-0891',name:'Juma Mwanga Salehe',  region:'Dodoma',       district:'Chamwino',   village:'Nzuguni',   status:'ACTIVE', offline:false,records:1240},
@@ -1050,6 +1167,11 @@ function VillageOfficersContent({darkMode,t}){
 
 // ── HEALTH OFFICERS CONTENT ──────────────────────────────
 function HealthOfficersContent({darkMode,t}){
+<<<<<<< HEAD
+=======
+  const [search,setSearch]=useState('')
+  const [page,setPage]=useState(0)
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
   const PER_PAGE=5
   const OFFICERS=[
     {id:'HO-0101',name:'Dr. Fatuma Rashidi',  facility:'Muhimbili National Hospital',region:'Dar es Salaam',district:'Ilala',    status:'ACTIVE', records:4120},
@@ -1105,6 +1227,10 @@ function HealthOfficersContent({darkMode,t}){
 // ── MANAGE USERS CONTENT ─────────────────────────────────
 function ManageUsersContent({darkMode,t}){
   const [roleFilter,setRoleFilter]=useState('all')
+<<<<<<< HEAD
+=======
+  const [search,setSearch]=useState('')
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
   const [warning,setWarning]=useState(null) // {type:'suspend'|'delete', user}
   const [users,setUsers]=useState([
     {id:'USR-001',name:'Dr. Fatuma Rashid',  role:'Super Admin',    email:'f.rashid@nbs.go.tz',    status:'ACTIVE',   last:'2026-05-12 14:20',online:true },
@@ -1220,6 +1346,10 @@ function SystemPerformanceContent({darkMode,t}){
 // ── LOG REPORTS ──────────────────────────────────────────
 function LogReportsContent({darkMode,t}){
   const [typeFilter,setTypeFilter]=useState('all')
+<<<<<<< HEAD
+=======
+  const [search,setSearch]=useState('')
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
   const LOGS=[
     {id:'LOG-001',type:'AUTH',   level:'INFO', user:'j.amsterdam@nbs.go.tz',action:'Successful login',                    time:'2026-05-12 14:22:01',ip:'197.186.1.10'},
     {id:'LOG-002',type:'AUDIT',  level:'INFO', user:'a.mwinyi@nbs.go.tz',   action:'Validated 1,200 citizen records',      time:'2026-05-12 14:20:10',ip:'41.220.3.89'},
@@ -1272,6 +1402,10 @@ function SecurityAlertsContent({darkMode,t}){
 
 // ── MIGRATION TRENDS ─────────────────────────────────────
 function MigrationTrendsContent({darkMode,t}){
+<<<<<<< HEAD
+=======
+  const [activeFilter,setActiveFilter]=useState({scope:'national',region:'',district:'',village:''})
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
   const data=[
     {month:'Jan',incoming:1240,outgoing:980},{month:'Feb',incoming:1380,outgoing:1120},
     {month:'Mar',incoming:1520,outgoing:1350},{month:'Apr',incoming:1680,outgoing:1200},
@@ -1298,6 +1432,10 @@ function MigrationTrendsContent({darkMode,t}){
 
 // ── MARRIAGE ISSUES ──────────────────────────────────────
 function MarriageIssuesContent({darkMode,t}){
+<<<<<<< HEAD
+=======
+  const [activeFilter,setActiveFilter]=useState({scope:'national',region:'',district:'',village:''})
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
   const STATS_M=[
     {label:'Total Marriages',value:'12,340,210',color:'text-[#00ff9d]'},{label:'Active',value:'11,890,430',color:'text-[#00d4ff]'},
     {label:'Dissolved',value:'312,840',color:'text-red-400'},{label:'Pending Dissolution',value:'136,940',color:'text-yellow-400'},
@@ -1349,6 +1487,10 @@ function MarriageIssuesContent({darkMode,t}){
 
 // ── HEALTH TRENDS ─────────────────────────────────────────
 function HealthTrendsContent({darkMode,t}){
+<<<<<<< HEAD
+=======
+  const [activeFilter,setActiveFilter]=useState({scope:'national',region:'',district:'',village:''})
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
   // Daily 24-hr data (00:00–23:00)
   const dailyData=Array.from({length:24},(_,h)=>({
     hour:`${String(h).padStart(2,'0')}:00`,
@@ -1526,7 +1668,11 @@ function GlobalSearch({t, darkMode, onNavigate}) {
 }
 
 // ── MAIN SUPER ADMIN DASHBOARD ───────────────────────────
+<<<<<<< HEAD
 export default function SuperAdminDashboard({onSectionChange,onLogout,authToken,currentUser}){
+=======
+export default function SuperAdminDashboard({onSectionChange,onLogout}){
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
   const [sidebarOpen, setSidebarOpen] =useState(false)
   const [activeNav,   setActiveNav]   =useState('Dashboard')
   const [darkMode,    setDarkMode]    =useState(false)
@@ -1586,7 +1732,11 @@ export default function SuperAdminDashboard({onSectionChange,onLogout,authToken,
 
   return(
     <div className={`flex h-full overflow-hidden ${t.bg} ${t.text}`}>
+<<<<<<< HEAD
       {showChangePwd&&<ChangePasswordModal onClose={()=>setShowChangePwd(false)} darkMode={darkMode} t={t} authToken={authToken}/>}
+=======
+      {showChangePwd&&<ChangePasswordModal onClose={()=>setShowChangePwd(false)} darkMode={darkMode} t={t}/>}
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
       {showNewReg&&<NewRegistrationModal onClose={()=>setShowNewReg(false)} darkMode={darkMode} t={t}/>}
       {showMfaSetup&&(
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">

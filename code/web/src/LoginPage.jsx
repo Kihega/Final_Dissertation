@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import { API } from './api'
+=======
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
 import { useState } from 'react'
 import { Eye, EyeOff, Lock, Mail, Shield, ChevronRight, RefreshCw,
          MapPin, Smartphone, CheckCircle, AlertCircle, Camera,
@@ -37,6 +40,7 @@ export default function LoginPage({ onLogin, adminType = null }) {
   const regDistricts = regForm.region ? getDistricts(regForm.region) : []
 
   // ── Handlers ─────────────────────────────────────────────
+<<<<<<< HEAD
   const handleLogin = async () => {
     if (!email.includes('@')) { setError('Enter a valid email'); return }
     if (password.length < 4)  { setError('Enter your password'); return }
@@ -66,6 +70,24 @@ export default function LoginPage({ onLogin, adminType = null }) {
     } finally {
       setLoading(false)
     }
+=======
+  const handleLogin = () => {
+    if (!email.includes('@')) { setError('Enter a valid email'); return }
+    if (password.length < 4)  { setError('Enter your password'); return }
+    setError(''); setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+      const hasMfa = true // ← backend: check user.mfa_enabled
+      if (hasMfa) setMode('mfa_verify')
+      else onLogin?.()
+    }, 1400)
+  }
+
+  const handleMfaVerify = () => {
+    if (mfaCode.length < 6) { setError('Enter the 6-digit TOTP code'); return }
+    setError(''); setLoading(true)
+    setTimeout(() => { setLoading(false); onLogin?.() }, 1000)
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
   }
 
   const handleToken = () => {

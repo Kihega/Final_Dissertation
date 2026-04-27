@@ -14,7 +14,12 @@
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^9.0.0",
     "@mui/material": "^9.0.0",
+<<<<<<< HEAD
     "leaflet": "^1.9.4",
+=======
+    "@tanstack/react-query": "^5.97.0",
+    "axios": "^1.15.0",
+>>>>>>> 51d0cb16b6a4f8712872b7c02f1f99bafe7537af
     "lucide-react": "^1.8.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
