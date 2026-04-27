@@ -1,0 +1,15 @@
+
+PROBLEM-01
+⚠️ What is HARD:
+All Wards per District
+All Villages/Streets per Ward
+
+
+Why?
+They change frequently (new wards/villages are created)
+No single clean public API or dataset
+Data is scattered across:
+Tanzania National Bureau of Statistics (NBS)
+TAMISEMI
+Local Government Authorities (LGAs)
+
