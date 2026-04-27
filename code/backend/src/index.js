@@ -1,18 +1,19 @@
+
 require('dotenv').config()
 const express = require('express')
-const morgan = require('morgan')
-
-const { connectDB } = require('./lib/prisma')
+const morgan  = require('morgan')
+const { connectDB }    = require('./lib/prisma')
 const { connectRedis } = require('./lib/redis')
-const {
-  helmetConfig,
-  corsConfig,
-  globalLimiter,
-} = require('./middleware/security')
+const { helmetConfig, corsConfig, globalLimiter } = require('./middleware/security')
 
-const healthRouter = require('./routes/health')
+const healthRouter    = require('./routes/health')
+const authRouter      = require('./routes/auth')
+const censusRouter    = require('./routes/census')
+const dashboardRouter = require('./routes/dashboard')
+const usersRouter     = require('./routes/users')
+const geoRouter       = require('./routes/geography')
 
-const app = express()
+const app  = express()
 const PORT = process.env.PORT || 5000
 
 app.use(helmetConfig)
@@ -22,26 +23,21 @@ app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ extended: true, limit: '10mb' }))
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'))
 
-app.use('/api/health', healthRouter)
+app.use('/api/health',      healthRouter)
+app.use('/api/auth',        authRouter)
+app.use('/api/census',      censusRouter)
+app.use('/api/geography',   geoRouter)
+app.use('/api/dashboard',   dashboardRouter)
+app.use('/api/admin',       dashboardRouter)
+app.use('/api/users',       usersRouter)
 
-// Fixed 404 handler — no wildcard '*'
-app.use((req, res) => {
-  res.status(404).json({
-    error: 'Route not found',
-    path: req.originalUrl,
-    method: req.method,
-  })
-})
-
+app.use((req, res) => res.status(404).json({ error: 'Route not found', path: req.originalUrl }))
 app.use((err, req, res, next) => {
-  console.error('❌ Error:', err.message)
-  if (err.message === 'Not allowed by CORS') {
+  console.error('❌', err.message)
+  if (err.message === 'Not allowed by CORS')
     return res.status(403).json({ error: 'CORS: Origin not allowed' })
-  }
   res.status(err.status || 500).json({
-    error: process.env.NODE_ENV === 'production'
-      ? 'Internal server error'
-      : err.message,
+    error: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message,
   })
 })
 
@@ -52,17 +48,13 @@ async function startServer() {
     app.listen(PORT, () => {
       console.log('═══════════════════════════════════════════')
       console.log('  Tanzania Digital Live Census API')
-      console.log(`  🚀 Server running on port ${PORT}`)
-      console.log(`  🌍 Environment: ${process.env.NODE_ENV || 'development'}`)
-      console.log(`  📡 Health: http://localhost:${PORT}/api/health`)
+      console.log(`  🚀 Port ${PORT} | Env: ${process.env.NODE_ENV || 'development'}`)
       console.log('═══════════════════════════════════════════')
     })
-  } catch (error) {
-    console.error('❌ Failed to start server:', error.message)
+  } catch (err) {
+    console.error('❌ Failed to start:', err.message)
     process.exit(1)
   }
 }
-
 startServer()
-
 module.exports = app
